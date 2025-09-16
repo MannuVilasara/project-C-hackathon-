@@ -12,6 +12,7 @@ connectDB()
 app.use(expresss.json())
 app.use(expresss.urlencoded({extended:true}))
 app.use(cookieParser())
+app.set("trust proxy", true); // if using proxy/vercel/nginx
 
 app.get("/",(req,res)=>{
     res.send("Api is running....");
