@@ -113,10 +113,9 @@ const Signup = () => {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/signup`, userData, {withCredentials: true});
       
       if (res.status === 201 || res.status === 200) {
-        const userObj = { username, email };
-        setuser(userObj);
+        setuser(res.data.newUser);
         settoken(res.data.token);
-        localStorage.setItem("user", JSON.stringify(userObj));
+        localStorage.setItem("user", JSON.stringify(res.data.newUser));
         localStorage.setItem("token", res.data.token);
 
         setusername("");
