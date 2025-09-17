@@ -7,7 +7,6 @@ import { Resend } from "resend";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { getClientIp, getGeoData, getUserAgentInfo } from "../utils/authSecurity.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,25 +24,11 @@ export const signup = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const ip=await getClientIp(req);
-    const geo=await getGeoData(ip);
-    const device =await getUserAgentInfo(req);
-    console.log(ip,geo,device);
-
-   const signupMeta = {
-      ip,
-      location: geo
-        ? { city: geo.city, region: geo.region, country: geo.country }
-        : {},
-      isp: geo?.org || "",
-      device,
-    };
 
     const newUser = new User({
       username,
       password: hashedPassword,
       email,
-      signupMeta,
     });
 
     await newUser.save();
@@ -53,6 +38,7 @@ export const signup = async (req, res) => {
     });
     res.cookie("token", token, {
       httpOnly: true,
+      secure: true,
       sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
@@ -81,32 +67,12 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const ip=await getClientIp(req);
-    const geo=await getGeoData(ip);
-    const device =await getUserAgentInfo(req);
-
-    const loginEntry = {
-      ip,
-      location: geo
-        ? { city: geo.city, region: geo.region, country: geo.country }
-        : {},
-      isp: geo?.org || "",
-      device,
-      loggedInAt: new Date(),
-    };
-
-    user.loginHistory.unshift(loginEntry);
-    if (user.loginHistory.length > 10) {
-      user.loginHistory.pop();
-    }
-
-    await user.save();
-
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
     res.cookie("token", token, {
       httpOnly: true,
+      secure: true,
       sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
