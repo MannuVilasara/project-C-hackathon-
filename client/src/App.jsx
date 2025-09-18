@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import AddServer from "./pages/AddServer";
 
 const ProtectedRoute = ({ children, role, user }) => {
   if (!user || user.role !== role) {
@@ -62,6 +63,7 @@ const App = () => {
         />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path='/add/server' element={<AddServer/>}/>
       </Routes>
       {!hideLayout && <Footer />}
 

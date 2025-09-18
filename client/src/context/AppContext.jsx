@@ -11,13 +11,16 @@ export const ContextProvider=({children})=>{
  const [user, setuser] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null);
 const [token, settoken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : null);
 const navigate=useNavigate()
+ const [activeTab, setActiveTab] = useState('profile');
 
 const value={
     user,
     setuser,
     token,
     settoken,
-    navigate
+    navigate,
+    activeTab,
+    setActiveTab
 }
 
     return(
