@@ -3,31 +3,33 @@ import { connectDB } from "./src/config/db.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./src/routes/user.routes.js";
 import serverRoutes from "./src/routes/server.routes.js";
-import cors from "cors"
+import cors from "cors";
 
-const app=expresss()
+const app = expresss();
 
 //database connection
-connectDB()
-app.use(cors({
-    origin:["http://localhost:5173"],
-    methods:["GET","POST","PUT","DELETE"],
-    credentials:true
-}))
+connectDB();
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "*"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 //middlewares
-app.use(expresss.json())
-app.use(expresss.urlencoded({extended:true}))
-app.use(cookieParser())
+app.use(expresss.json());
+app.use(expresss.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.set("trust proxy", true); // if using proxy/vercel/nginx
 
-app.get("/",(req,res)=>{
-    res.send("Api is running....");
-})
-app.use('/api/user',userRoutes)
-app.use('/api',serverRoutes)
+app.get("/", (req, res) => {
+  res.send("Api is running....");
+});
+app.use("/api/user", userRoutes);
+app.use("/api", serverRoutes);
 
-//server listening  
-app.listen(process.env.PORT,()=>{
-    console.log(`server is running on port ${process.env.PORT}`);
-})
+//server listening
+app.listen(process.env.PORT, () => {
+  console.log(`server is running on port ${process.env.PORT}`);
+});

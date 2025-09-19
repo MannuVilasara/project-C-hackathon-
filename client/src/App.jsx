@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -15,7 +15,9 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import AddServer from "./pages/AddServer";
 
+// eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ children, role, user }) => {
+  // eslint-disable-next-line react/prop-types
   if (!user || user.role !== role) {
     toast.error("You are not authorized to access this page.");
     return <Navigate to="/" replace />;
@@ -27,7 +29,8 @@ const App = () => {
   const { user } = useContext(appContext);
   const location = useLocation();
 
-  const hideLayout = location.pathname.includes("login") || location.pathname.includes("signup");
+  const hideLayout =
+    location.pathname.includes("login") || location.pathname.includes("signup");
 
   return (
     <div>
@@ -63,7 +66,7 @@ const App = () => {
         />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path='/add/server' element={<AddServer/>}/>
+        <Route path="/add/server" element={<AddServer />} />
       </Routes>
       {!hideLayout && <Footer />}
 
