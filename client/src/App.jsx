@@ -32,6 +32,13 @@ const App = () => {
   const hideLayout =
     location.pathname.includes("login") || location.pathname.includes("signup");
 
+  // Debug logging
+  console.log("App render:", {
+    user: user ? { id: user._id, email: user.email, role: user.role } : null,
+    pathname: location.pathname,
+    hideLayout,
+  });
+
   return (
     <div>
       {!hideLayout && <Navbar />}

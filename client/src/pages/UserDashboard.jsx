@@ -1,29 +1,29 @@
-import React, { useContext, useState } from 'react';
-import appContext from '../context/AppContext';
-import ProfileTab from '../components/ProfileTab';
-import AuthorizeGitHubTab from '../components/AuthorizeGitHubTab';
-import AddServerTab from '../components/AddServerTab';
+import React, { useContext, useState } from "react";
+import appContext from "../context/AppContext";
+import ProfileTab from "../components/ProfileTab";
+import AuthorizeGitHubTab from "../components/AuthorizeGitHubTab";
+import AddServerTab from "../components/AddServerTab";
 
 const UserDashboard = () => {
   const { user, activeTab, setActiveTab } = useContext(appContext);
   const [connectedRepos, setConnectedRepos] = useState([]);
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 pt-16 relative">
       <div className="fixed inset-0 z-0">
-        <img 
-          src="/background-auth.webp" 
-          alt="Background" 
+        <img
+          src="/background-auth.webp"
+          alt="Background"
           className="w-full h-full object-cover opacity-20"
         />
         <div className="absolute inset-0 bg-black/70"></div>
@@ -33,40 +33,40 @@ const UserDashboard = () => {
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-white mb-2">
-              Welcome back, {user?.username || 'User'}!
+              Welcome back, {user?.username || "User"}!
             </h1>
             <p className="text-gray-400 mb-6">
               Manage your repositories and monitor security across your services
             </p>
-            
+
             <div className="border-b border-gray-700">
               <nav className="flex space-x-8">
                 <button
-                  onClick={() => setActiveTab('profile')}
+                  onClick={() => setActiveTab("profile")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'profile'
-                      ? 'border-blue-500 text-blue-400'
-                      : 'border-transparent text-gray-400 hover:text-gray-300'
+                    activeTab === "profile"
+                      ? "border-blue-500 text-blue-400"
+                      : "border-transparent text-gray-400 hover:text-gray-300"
                   } transition-colors duration-200`}
                 >
                   Profile
                 </button>
                 <button
-                  onClick={() => setActiveTab('github')}
+                  onClick={() => setActiveTab("github")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'github'
-                      ? 'border-blue-500 text-blue-400'
-                      : 'border-transparent text-gray-400 hover:text-gray-300'
+                    activeTab === "github"
+                      ? "border-blue-500 text-blue-400"
+                      : "border-transparent text-gray-400 hover:text-gray-300"
                   } transition-colors duration-200`}
                 >
                   Authorize GitHub
                 </button>
                 <button
-                  onClick={() => setActiveTab('server')}
+                  onClick={() => setActiveTab("server")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'server'
-                      ? 'border-blue-500 text-blue-400'
-                      : 'border-transparent text-gray-400 hover:text-gray-300'
+                    activeTab === "server"
+                      ? "border-blue-500 text-blue-400"
+                      : "border-transparent text-gray-400 hover:text-gray-300"
                   } transition-colors duration-200`}
                 >
                   Add Server
@@ -75,17 +75,13 @@ const UserDashboard = () => {
             </div>
           </div>
 
-          {activeTab === 'profile' && (
+          {activeTab === "profile" && (
             <ProfileTab user={user} formatDate={formatDate} />
           )}
 
-          {activeTab === 'github' && (
-            <AuthorizeGitHubTab connectedRepos={connectedRepos} />
-          )}
+          {activeTab === "github" && <AuthorizeGitHubTab />}
 
-          {activeTab === 'server' && (
-            <AddServerTab />
-          )}
+          {activeTab === "server" && <AddServerTab />}
         </div>
       </div>
     </div>

@@ -128,41 +128,34 @@ export const checkVerificationSession = async (req, res) => {
 export const verifyServerOtp = async (req, res) => {
   try {
     // const ip = getclientIp(req);
-    const ip = "10.214.22.26";
+    // const ip = "10.214.22.26";
     const { otp } = req.body;
-    console.log("Client IP:", ip);
+    // console.log("Client IP:", ip);
     if (!otp) {
       return res.status(400).json({ message: "OTP is required" });
     }
     console.log("Received OTP:", otp);
 
-    const server = await Server.findOne({ serverIP: ip });
-    if (!server) {
+    const serverOtp = await ServerOTP.findOne({
+      otp: otp,
+      expiresAt: { $gt: new Date() },
+    }).sort({ createdAt: -1 });
+    if (!serverOtp) {
       return res.status(404).json({
-        message:
-          "Server not found or IP address doesn't match any registered server",
+        message: "Invalid OTP. Please check the OTP displayed on the website.",
       });
     }
+    const server = await Server.findById(serverOtp.server);
     if (server.isVerified) {
       return res.status(400).json({ message: "Server is already verified" });
     }
 
     // Check if there's an active OTP session for this server
-    const serverOtp = await ServerOTP.findOne({
-      server: server._id,
-      expiresAt: { $gt: new Date() },
-    }).sort({ createdAt: -1 });
 
     if (!serverOtp) {
       return res.status(404).json({
         message:
           "No active verification session found. Please start verification from the website dashboard.",
-      });
-    }
-
-    if (serverOtp.otp !== otp) {
-      return res.status(400).json({
-        message: "Invalid OTP. Please check the OTP displayed on the website.",
       });
     }
 

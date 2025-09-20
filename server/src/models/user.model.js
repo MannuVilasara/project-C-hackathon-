@@ -15,9 +15,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    githubUser: {
+      type: String,
+      unique: true,
+      sparse: true, // Allow null values to be non-unique
+    },
+    githubConnectedAt: {
+      type: Date,
+    },
     role: {
       type: String,
-      enum: ["user", "admin","serviceProvider"],
+      enum: ["user", "admin", "serviceProvider"],
       default: "user",
     },
 
@@ -57,7 +65,6 @@ const userSchema = new mongoose.Schema(
         loggedInAt: { type: Date, default: Date.now },
       },
     ],
-
   },
   { timestamps: true }
 );
